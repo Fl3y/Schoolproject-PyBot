@@ -1,5 +1,5 @@
 
-import discord 
+import discord  
 from decouple import config
 
 TOKEN = config("TOKEN")
