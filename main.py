@@ -1,6 +1,10 @@
-import discord  
+import os
+import dotenv
+import discord
 
-TOKEN = "TOKEN"
+dotenv.load_dotenv()
+
+TOKEN = os.getenv("TOKEN")
 
 client = discord.Client()
 
