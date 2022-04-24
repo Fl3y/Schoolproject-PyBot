@@ -1,8 +1,6 @@
-
 import discord  
-from decouple import config
 
-TOKEN = config("TOKEN")
+TOKEN = "TOKEN"
 
 client = discord.Client()
 
