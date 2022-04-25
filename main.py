@@ -2,11 +2,16 @@ import os
 import dotenv
 import discord
 
+intents = discord.Intents.default()
+
 dotenv.load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
 
-client = discord.Client()
+client = discord.Client(intents=intents)
+
+
+
 
 @client.event
 async def on_ready():
