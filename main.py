@@ -1,42 +1,36 @@
 import os
 import dotenv
 import discord
+from discord.ext import commands
 
-intents = discord.Intents.default()
 
 dotenv.load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
 
-client = discord.Client(intents=intents)
+intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
 
-
+client = commands.Bot(command_prefix='.', intents=intents)
 
 
 @client.event
 async def on_ready():
     print("We have logged in as {0.user}".format(client))
 
-@client.event
-async def on_Message(message):
-    username = str(message.author).split("#")[0]
-    user_message = str(message.content)
-    channel = str(message.channel.name)
-    print(f"{username}: {user_message} ({channel})")
+@client.event 
+async def on_member_join(member):
+    print(f"{member} has joint the server,")
+    return
 
-    if message.author == client.user:
-        return
+@client.event 
+async def on_member_remove(member):
+    print(f"{member} has left the server,")
+    return
+
+@client.command()
+async def ping(ctx):
+    await ctx.send(f"Pong! {round(client.latency * 1000)} ms")
     
-    if message.channel.name == "general-bot":
-        if user_message.lower() == "hello":
-            await message.channel.send(f"Hello {username}!")
-            return
-
-        elif user_message.lower() == "bye":
-            await message.channel.send(f"See you later {username}!")
-            return
-        
-
 client.run(TOKEN)
 
 
