@@ -3,7 +3,6 @@ import dotenv
 import discord
 
 intents = discord.Intents.default()
-intents.typing = True
 
 dotenv.load_dotenv()
 
