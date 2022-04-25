@@ -1,14 +1,14 @@
 import os
 import dotenv
 import discord
+from discord.ext import commands
 
-intents = discord.Intents.default()
-
+intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
 dotenv.load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
 
-client = discord.Client(intents=intents)
+client = commands.Bot(command_prefix='.', intents=intents)
 
 
 
@@ -16,6 +16,14 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_ready():
     print("We have logged in as {0.user}".format(client))
+
+@client.event 
+async def on_Member_join(member):
+    print(f"{member} has joint the server,")
+
+@client.event 
+async def on_Member_remove(member):
+    print(f"{member} has left the server,")
 
 @client.event
 async def on_Message(message):
