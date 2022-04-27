@@ -1,5 +1,7 @@
+import datetime
 import os
 import dotenv
+import humanfriendly
 import discord
 from discord.ext import commands
 
@@ -8,7 +10,7 @@ dotenv.load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
 
-intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
+intents = discord.Intents.all()
 
 client = commands.Bot(command_prefix='.', intents=intents)
 
@@ -16,6 +18,7 @@ client = commands.Bot(command_prefix='.', intents=intents)
 @client.event
 async def on_ready():
     print("We have logged in as {0.user}".format(client))
+    return
 
 @client.event 
 async def on_member_join(member):
@@ -30,7 +33,10 @@ async def on_member_remove(member):
 @client.command()
 async def ping(ctx):
     await ctx.send(f"Pong! {round(client.latency * 1000)} ms")
-    
+
+@client.command()
+async def schlafen(ctx, member : discord.Member,time = None, *, reason=None):
+    time = humanfriendly.parse_timespan(time)
+    await member.timeout(until = discord.utils.utcnow() + datetime.timedelta(seconds = time), reason=reason)
+    await ctx.send(f"{member} has been timed out for {time} | Reason: {reason}")
 client.run(TOKEN)
-
-
