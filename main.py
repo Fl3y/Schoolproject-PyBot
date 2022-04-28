@@ -1,5 +1,4 @@
 import datetime
-from dis import disco
 import os
 import dotenv
 import humanfriendly
