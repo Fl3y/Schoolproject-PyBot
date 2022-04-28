@@ -10,7 +10,7 @@ import music
 
 cogs = [music]
 
-
+#this is untested
 
 
 dotenv.load_dotenv()
