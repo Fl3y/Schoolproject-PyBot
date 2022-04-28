@@ -1,9 +1,17 @@
 import datetime
+from dis import disco
 import os
 import dotenv
 import humanfriendly
 import discord
+import ffmpeg
 from discord.ext import commands
+import music
+
+
+cogs = [music]
+
+
 
 
 dotenv.load_dotenv()
@@ -13,6 +21,9 @@ TOKEN = os.getenv("TOKEN")
 intents = discord.Intents.all()
 
 client = commands.Bot(command_prefix='.', intents=intents)
+
+for i in range(len(cogs)):
+    cogs[i].setup(client)
 
 
 @client.event
@@ -39,4 +50,7 @@ async def schlafen(ctx, member : discord.Member,time = None, *, reason=None):
     time = humanfriendly.parse_timespan(time)
     await member.timeout(until = discord.utils.utcnow() + datetime.timedelta(seconds = time), reason=reason)
     await ctx.send(f"{member} has been timed out for {time} | Reason: {reason}")
+
+
+
 client.run(TOKEN)
