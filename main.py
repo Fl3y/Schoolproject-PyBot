@@ -5,12 +5,19 @@ import humanfriendly
 import discord
 import ffmpeg
 from discord.ext import commands
+import json 
+import re
 import music
+import ReputationScore
 
 
-cogs = [music]
+cogs = [music, ReputationScore]
 
-#this is untested
+if os.path.exists(os.getcwd() + "/config.json"):
+    with open("./config.json") as f:
+        configData = json.load(f)
+
+bannedWords = configData["bannedWords"]
 
 
 dotenv.load_dotenv()
@@ -23,7 +30,6 @@ client = commands.Bot(command_prefix='.', intents=intents)
 
 for i in range(len(cogs)):
     cogs[i].setup(client)
-
 
 @client.event
 async def on_ready():
@@ -39,6 +45,23 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f"{member} has left the server,")
     return
+
+def msg_contains_words(msg, word):
+    return re.search(fr'\b({word})\b', msg) is not None  
+
+@client.event
+async def on_message(message):
+    global bannedWords
+    messageAuthor = message.author
+ 
+    if bannedWords != None and (isinstance(message.channel, discord.channel.DMChannel) == False):
+        for bannedWords in bannedWords:
+            if msg_contains_words(message.lower(), bannedWords):
+                await message.delete()
+                await message.channel.send(f"{messageAuthor.mention} your message was removed as it contains a banned word.")
+
+        await client.process_commands(message)
+
 
 @client.command()
 async def ping(ctx):
