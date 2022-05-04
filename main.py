@@ -9,6 +9,11 @@ import json
 import re
 import music
 import ReputationScore
+import asyncio
+import aiomysql
+import time
+
+
 
 
 cogs = [music, ReputationScore]
@@ -31,10 +36,22 @@ client = commands.Bot(command_prefix='.', intents=intents)
 for i in range(len(cogs)):
     cogs[i].setup(client)
 
+async def update_state():
+    await client.wait_until_ready()
+    
+    while not client.is_closed():
+        try:
+            with open ("stats.txt", "a") as f:
+                f.write(f"Ctzn Score: {ReputationScore.standart_Ctzn_Score}")
+        except Exception as e:
+            print(e)
+
 @client.event
 async def on_ready():
     print("We have logged in as {0.user}".format(client))
     return
+
+ 
 
 @client.event 
 async def on_member_join(member):
@@ -51,16 +68,19 @@ def msg_contains_words(msg, word):
 
 @client.event
 async def on_message(message):
-    global bannedWords
     messageAuthor = message.author
+    global bannedWords
+    print (bannedWords)
  
     if bannedWords != None and (isinstance(message.channel, discord.channel.DMChannel) == False):
-        for bannedWords in bannedWords:
-            if msg_contains_words(message.lower(), bannedWords):
+        for bannedWord in bannedWords:
+            if msg_contains_words(message.content.lower(), bannedWord):
                 await message.delete()
                 await message.channel.send(f"{messageAuthor.mention} your message was removed as it contains a banned word.")
 
-        await client.process_commands(message)
+    await client.process_commands(message)
+    return
+
 
 
 @client.command()
