@@ -12,7 +12,8 @@ import ReputationScore
 import asyncio
 import aiomysql
 import time
-
+from mysql.connector import MySQLConnection, Error
+from python_mysql_dbconfig import read_db_config
 
 
 
@@ -36,15 +37,31 @@ client = commands.Bot(command_prefix='.', intents=intents)
 for i in range(len(cogs)):
     cogs[i].setup(client)
 
-async def update_state():
-    await client.wait_until_ready()
-    
-    while not client.is_closed():
-        try:
-            with open ("stats.txt", "a") as f:
-                f.write(f"Ctzn Score: {ReputationScore.standart_Ctzn_Score}")
-        except Exception as e:
-            print(e)
+def connect():
+    """ Connect to MySQL database """
+
+    db_config = read_db_config()
+    conn = None
+    try:
+        print('Connecting to MySQL database...')
+        conn = MySQLConnection(**db_config)
+
+        if conn.is_connected():
+            print('Connection established.')
+        else:
+            print('Connection failed.')
+
+    except Error as error:
+        print(error)
+
+    finally:
+        if conn is not None and conn.is_connected():
+            conn.close()
+            print('Connection closed.')
+
+
+if __name__ == '__main__':
+    connect()
 
 @client.event
 async def on_ready():
@@ -56,6 +73,7 @@ async def on_ready():
 @client.event 
 async def on_member_join(member):
     print(f"{member} has joint the server,")
+    
     return
 
 @client.event 
