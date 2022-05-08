@@ -1,6 +1,9 @@
+from tokenize import Name
+from unicodedata import name
 import database
+import ReputationScore
 from discord.ext import commands
-
+import discord
 
 class Newuser(commands.Cog):
 
@@ -9,25 +12,14 @@ class Newuser(commands.Cog):
 
     @commands.command(name="newuser")
     @commands.has_permissions(administrator=True)
-    async def insert_user(self, ctx, *args):
+    async def insert_user(self, ctx, member: discord.Member, score):
         try:
-            name = ' '.join(args)
-            discord = ' '.join(args)
-        except IndexError:
-            try:
-                name = ' '.join(args)
-                age = ' '.join(args)
-            except ValueError:
-                await ctx.send("Please enter a name")
-                return
-            except IndexError:
-                await ctx.send("Please add users details")
-                return
-        add = database.insert_user(player_name=name, discord_tag=discord)
-        if isinstance(add, Exception):
-            await ctx.send(f"Database error when adding a new admin:\n```\n{add}\n```")
-            return
-        await ctx.send("Added the role to my admin list.")
+            database.insert_user(member, score)
+            await ctx.send(f"user added to Database")
+        except Exception as e:
+            return e
+
+        
 
 
 def setup(client):

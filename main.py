@@ -9,6 +9,7 @@ import json
 import re
 import music
 import ReputationScore
+import newuser
 import asyncio
 import aiomysql
 import time
@@ -17,7 +18,7 @@ from python_mysql_dbconfig import read_db_config
 
 
 
-cogs = [music, ReputationScore]
+cogs = [music, ReputationScore, newuser]
 
 if os.path.exists(os.getcwd() + "/config.json"):
     with open("./config.json") as f:
@@ -73,6 +74,7 @@ async def on_ready():
 @client.event 
 async def on_member_join(member):
     print(f"{member} has joint the server,")
+
     
     return
 

@@ -3,6 +3,7 @@ import json
 import os
 from discord.ext import commands
 
+standart_Ctzn_Score = 1000
 
 if os.path.exists(os.getcwd() + "/config.json"):
     with open("./config.json") as f:
@@ -14,6 +15,8 @@ bannedWords = configData["bannedWords"]
 class Reputation(commands.Cog):
     def __init__(self, client,):
         self.client = client
+
+    
 
     @commands.command()
     async def addbannedword(self, ctx, word):
