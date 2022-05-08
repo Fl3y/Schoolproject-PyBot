@@ -9,8 +9,10 @@ import json
 import re
 import music
 import ReputationScore
-
-
+from ReputationScore import standart_Ctzn_Score
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
 
 
 
@@ -25,7 +27,12 @@ bannedWords = configData["bannedWords"]
 
 dotenv.load_dotenv()
 
-TOKEN = os.getenv("TOKEN")
+TOKEN = os.getenv('TOKEN')
+
+cred = credentials.Certificate("serviceAccountKey.json")
+databaseApp = firebase_admin.initialize_app(cred, {
+    'databaseURL' : "https://amplified-cache-305320-default-rtdb.europe-west1.firebasedatabase.app/"
+})
 
 intents = discord.Intents.all()
 
@@ -47,7 +54,17 @@ async def on_ready():
 @client.event 
 async def on_member_join(member):
     print(f"{member} has joint the server,")
-    
+    Users = "Users"
+    user = member.id
+    ref = db.reference(f"/")
+    ref.update({
+        Users:{
+            user:{
+                "Ctzn_Score": standart_Ctzn_Score
+            }    
+        }
+    })
+
     return
 
 @client.event 
