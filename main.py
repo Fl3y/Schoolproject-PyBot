@@ -53,7 +53,7 @@ async def on_ready():
 
 @client.event 
 async def on_member_join(member):
-    print(f"{member} has joint the server,")
+    print(f"{member} has joined the server,")
     Users = "Users"
     user = member.id
     ref = db.reference(f"/")
@@ -84,8 +84,22 @@ async def on_message(message):
     if bannedWords != None and (isinstance(message.channel, discord.channel.DMChannel) == False):
         for bannedWord in bannedWords:
             if msg_contains_words(message.content.lower(), bannedWord):
-                await message.delete()
-                await message.channel.send(f"{messageAuthor.mention} your message was removed as it contains a banned word.")
+                    user = message.author
+                    print(user.id)
+                    ref = db.reference("Users")
+                    Score = ref.child(str(user.id)).child('Ctzn_Score').get()
+                    newScore = Score - 50
+                    ref.update({
+                            user.id:{
+                                "Ctzn_Score": newScore
+                            }    
+                    })
+                    Score = ref.child(str(user.id)).child('Ctzn_Score').get()
+                    if Score <= 0:
+                        await user.ban(reason = "You have been executed for treason")
+                    await message.delete()
+      
+                    await message.channel.send(f"{messageAuthor.mention} your message was removed as it contains a banned word.")
 
     await client.process_commands(message)
     return

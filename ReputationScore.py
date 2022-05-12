@@ -1,3 +1,4 @@
+
 import discord
 import json
 import os
@@ -57,8 +58,52 @@ class Reputation(commands.Cog):
             await ctx.send("Word isnt banned")
 
     @commands.command()
+    async def addPoints(self, ctx, member: discord.Member, points):
+        ref = db.reference("Users")
+        Score = ref.child(str(member.id)).child('Ctzn_Score').get()
+        print(Score)
+        newScore = Score + int(points)
+        ref.update({
+            member.id:{
+                    "Ctzn_Score": newScore
+            }
+        })
+
+    @commands.command()
+    async def removePoints(self, ctx, member: discord.Member, points):
+        ref = db.reference("Users")
+        Score = ref.child(str(member.id)).child('Ctzn_Score').get()
+        print(Score)
+        newScore = Score - int(points)
+        ref.update({
+            member.id:{
+                    "Ctzn_Score": newScore
+            }
+        })
+
+    @commands.command()
+    async def setPoints(self, ctx, member: discord.Member, points):
+        ref = db.reference("Users")
+        Score = ref.child(str(member.id)).child('Ctzn_Score').get()
+        print(Score)
+        newScore = int(points)
+        ref.update({
+            member.id:{
+                    "Ctzn_Score": newScore
+            }
+        })
+
+    @commands.command()
+    async def myPoints(self, ctx,):
+        member = ctx.message.author
+        ref = db.reference("Users")
+        Score = ref.child(str(member.id)).child('Ctzn_Score').get()
+        await ctx.send(f'Ni hao {member} the party got reports you have {Score} Points')
+     
+
+
+    @commands.command()
     async def checkDatabase(self, ctx):
-        Users = "Users"
         names = list()
         users = db.reference("Users").get()
         for user in ctx.guild.members:
