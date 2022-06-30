@@ -1,9 +1,9 @@
-
+import random
 import discord
 import json
 import os
 from discord.ext import commands
-from discord import Guild
+from discord.commands import *
 from firebase_admin import db
 
 
@@ -17,8 +17,10 @@ bannedWords = configData["bannedWords"]
 
 
 class Reputation(commands.Cog):
-    def __init__(self, client,):
+    def __init__(self, client):
         self.client = client
+       
+    
 
     @commands.command()
     async def addbannedword(self, ctx, word):
@@ -118,7 +120,10 @@ class Reputation(commands.Cog):
                     }
                 )
 
-         
+
+    
+    
+        
 
 def setup(client):
     client.add_cog(Reputation(client))
