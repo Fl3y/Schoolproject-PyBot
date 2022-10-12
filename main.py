@@ -12,7 +12,7 @@ import re
 import music
 import ReputationScore
 import random
-from discord import ButtonStyle, Guild, Interaction, Member, User
+from discord import ButtonStyle
 from discord.ui import Button, View
 from ReputationScore import standart_Ctzn_Score
 import firebase_admin
@@ -88,48 +88,95 @@ class myView(discord.ui.View):
         global trueAnswer
         global answerClicked 
 
+        role = discord.utils.get(interaction.channel.guild.roles, name = "Question")
 
-        if trueAnswer == answerA and answerClicked != True:
+        if trueAnswer == answerA and answerClicked != True and role in interaction.user.roles:
             button1.label = "Your answer is correct"
             button1.style = ButtonStyle.success
             button1.disabled = True
             answerClicked = True
+            user = interaction.user
+            ref =  db.reference("Users")
+            Score = ref.child(str(user.id)).child('Ctzn_Score').get()
+            newScore = Score + 100
+            ref.update({
+                user.id:{
+                    "Ctzn_Score": newScore
+                }
+            })
             await interaction.response.edit_message(view = self)
         elif answerClicked == True:
-            button1.label = "You allready answered the Question"
+            button1.label = "You already answered the Question"
             button1.style = ButtonStyle.danger
             button1.disabled = True
+            answerClicked = True
             await interaction.response.edit_message(view = self)
-        else:
+        elif trueAnswer != answerA and role in interaction.user.roles:
             button1.label = "Your answer is wrong"
             button1.style = ButtonStyle.red
             button1.disabled = True
+            answerClicked = True
+            user = interaction.user
+            ref = db.reference("Users")
+            Score = ref.child(str(user.id)).child('Ctzn_Score').get()
+            newScore = Score - 50
+            ref.update({
+                    user.id:{
+                            "Ctzn_Score": newScore
+                            }    
+                    })
+            if Score <= 0:
+                await user.ban(reason = "You have been executed for treason")
             await interaction.response.edit_message(view = self)
 
     @discord.ui.button(label="B", style=ButtonStyle.grey, disabled=False)
     async def button2_callback(self, button2, interaction):
         global answerClicked
+        global trueAnswer
         global answerA
         global answerB
         global answerC
         global answerD
 
-        if trueAnswer == answerB and answerClicked != True:
+        role = discord.utils.get(interaction.channel.guild.roles, name = "Question")
+
+        if trueAnswer == answerB and answerClicked != True and role in interaction.user.roles:
             button2.label = "Your answer is correct"
             button2.style = ButtonStyle.success
             button2.disabled = True
             answerClicked = True
+            user = interaction.user
+            ref =  db.reference("Users")
+            Score = ref.child(str(user.id)).child('Ctzn_Score').get()
+            newScore = Score + 100
+            ref.update({
+                user.id:{
+                    "Ctzn_Score": newScore
+                }
+            })
             await interaction.response.edit_message(view = self)
         elif answerClicked == True:
-            button2.label = "You allready answered the Question"
+            button2.label = "You already answered the Question"
             button2.style = ButtonStyle.danger
             button2.disabled = True
+            answerClicked = True
             await interaction.response.edit_message(view = self)
-        else:
+        elif trueAnswer != answerB and role in interaction.user.roles:
             button2.label = "Your answer is wrong"
             button2.style = ButtonStyle.red
             button2.disabled = True
             answerClicked = True
+            user = interaction.user
+            ref = db.reference("Users")
+            Score = ref.child(str(user.id)).child('Ctzn_Score').get()
+            newScore = Score - 50
+            ref.update({
+                    user.id:{
+                            "Ctzn_Score": newScore
+                            }    
+                    })
+            if Score <= 0:
+                await user.ban(reason = "You have been executed for treason")
             await interaction.response.edit_message(view = self)
                     
     @discord.ui.button(label="C", style=ButtonStyle.grey, disabled=False)
@@ -140,22 +187,44 @@ class myView(discord.ui.View):
         global answerC
         global answerD
 
-        if trueAnswer == answerC and answerClicked != True:
+        role = discord.utils.get(interaction.channel.guild.roles, name = "Question")
+
+        if trueAnswer == answerC and answerClicked != True and role in interaction.user.roles:
             button3.label = "Your answer is correct"
             button3.style = ButtonStyle.success
             button3.disabled = True
             answerClicked = True
+            user = interaction.user
+            ref =  db.reference("Users")
+            Score = ref.child(str(user.id)).child('Ctzn_Score').get()
+            newScore = Score + 100
+            ref.update({
+                user.id:{
+                    "Ctzn_Score": newScore
+                }
+            })
             await interaction.response.edit_message(view = self)
         elif answerClicked == True:
-            button3.label = "You allready answered the Question"
+            button3.label = "You already answered the Question"
             button3.style = ButtonStyle.danger
             button3.disabled = True
             await interaction.response.edit_message(view = self)
-        else:
+        elif trueAnswer != answerC and role in interaction.user.roles:
             button3.label = "Your answer is wrong"
             button3.style = ButtonStyle.red
             button3.disabled = True
             answerClicked = True
+            user = interaction.user
+            ref = db.reference("Users")
+            Score = ref.child(str(user.id)).child('Ctzn_Score').get()
+            newScore = Score - 50
+            ref.update({
+                    user.id:{
+                            "Ctzn_Score": newScore
+                            }    
+                    })
+            if Score <= 0:
+                await user.ban(reason = "You have been executed for treason")
             await interaction.response.edit_message(view = self)
     
     @discord.ui.button(label="D", style=ButtonStyle.grey, disabled=False)
@@ -166,22 +235,45 @@ class myView(discord.ui.View):
         global answerC
         global answerD
 
-        if trueAnswer == answerD and answerClicked != True:
+        role = discord.utils.get(interaction.channel.guild.roles, name = "Question")
+
+        if trueAnswer == answerD and answerClicked != True and role in interaction.user.roles:
             button4.label = "Your answer is correct"
             button4.style = ButtonStyle.success
             button4.disabled = True
             answerClicked = True
+            user = interaction.user
+            ref =  db.reference("Users")
+            Score = ref.child(str(user.id)).child('Ctzn_Score').get()
+            newScore = Score + 100
+            ref.update({
+                user.id:{
+                    "Ctzn_Score": newScore
+                }
+            })
             await interaction.response.edit_message(view = self)
         elif answerClicked == True:
-            button4.label = "You allready answered the Question"
+            button4.label = "You already answered the Question"
             button4.style = ButtonStyle.danger
             button4.disabled = True
+            answerClicked = True
             await interaction.response.edit_message(view = self)
-        else:
+        elif trueAnswer != answerD and role in interaction.user.roles:
             button4.label = "Your answer is wrong"
             button4.style = ButtonStyle.red
             button4.disabled = True
             answerClicked = True
+            user = interaction.user
+            ref = db.reference("Users")
+            Score = ref.child(str(user.id)).child('Ctzn_Score').get()
+            newScore = Score - 50
+            ref.update({
+                    user.id:{
+                            "Ctzn_Score": newScore
+                            }    
+                    })
+            if Score <= 0:
+                await user.ban(reason = "You have been executed for treason")
             await interaction.response.edit_message(view = self)
 
 
@@ -245,33 +337,43 @@ async def on_message(message):
     await client.process_commands(message)
     return
 
-@client.command()
-async def Questions(ctx):
-    print("hellow World")
+
 
 
 @tasks.loop(seconds=50)
 async def loyaltyQuestion():
     await client.wait_until_ready()
+
     names = list()
     channel = client.get_channel(950532739579379766)
     print(channel.name)
+
+    roletoRemove = discord.utils.get(channel.guild.roles, name = "Question")
+
+    for member in channel.guild.members:
+        try:
+            await member.remove_roles(roletoRemove)
+        except:
+            print("role cant be removed")
+
+    global answerClicked
+    answerClicked = False
 
     for user in channel.guild.members:
         if user.bot:
             continue
         else:
-            names.append(user.id)
+            names.append(user)
             print()
             print(len(names))
 
     personToPick = random.randint(0,len(names)- 1)
-    WhoWaspickedID = names[personToPick]
-
-    WhoWaspicked
+    WhoWaspicked = names[personToPick]
+    print(WhoWaspicked)
+    
 
     role = discord.utils.get(channel.guild.roles, name = "Question")
-    
+    await WhoWaspicked.add_roles(role)
 
     global Question
     global trueAnswer
@@ -290,6 +392,7 @@ async def loyaltyQuestion():
     Question = random.choice(list(data.keys()))
     All_Answers = str(data[Question])
     Answers= All_Answers.split(", ", 4)
+    print(Answers)
     charactersToRemove = "[]'"
     answer1 = Answers[0]
     answerA = answer1.strip(charactersToRemove)

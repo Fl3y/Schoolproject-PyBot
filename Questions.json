@@ -1,5 +1,6 @@
-{   "What is Taiwan?": ["What is taiwan?", "A Country", "A cool country", "fije", "What is Taiwan?"],
-    "Who is Mao Zedong?" : ["A Hero", "dwfewfw", "ddwfew", "gwrg", "A Hero"],
-    "What is China?":["The best Country in the world", "fwdfw", "uhdfi", "sgere", "The best Country in the world"],
-    "What do you think about the Party?":["Criminals", "THe perfect leaders", "ejwf", "ieojwo", "THe perfect leaders"]
+{   "What is Taiwan?": ["A cool country", "A country", "What is Taiwan?", "Righfully free", "What is Taiwan?"],
+    "Who is Mao Zedong?" : ["A Hero", "A ruthless diktator", "Stupid", "Killer of Millions", "A Hero"],
+    "What is China?":["The best Country in the world", "Great but USA is better", "Full of human rights violations", "A small country ", "The best Country in the world"],
+    "What do you think about the Party?":["Criminals", "The perfect leaders", "everyone in there is corrupt", "The should be mor democratical", "The perfect leaders"],
+    "What happend on june the 4th?":["Tian’anmen-Massaker", "Nothing", "An incident", "An open killing", "Nothing"]
 }
